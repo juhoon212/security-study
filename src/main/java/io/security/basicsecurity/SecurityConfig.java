@@ -11,10 +11,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Configuration
@@ -26,31 +29,21 @@ public class SecurityConfig{
         http
                 .authorizeHttpRequests()
                 .anyRequest().authenticated();
+        // 로그인 성공 후 핸들러
+        // 로그인 실패 후 핸들러
         http
-                .formLogin()
-//                .loginPage("/loginPage")
-                .defaultSuccessUrl("/")
-                .failureUrl("/login")
-                .usernameParameter("userId")
-                .passwordParameter("passwd")
-                .loginProcessingUrl("/login_proc")
-                // 익명 클래스 사용
-                .successHandler(new AuthenticationSuccessHandler() {
-                    @Override
-                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        System.out.println("authentication" + authentication.getName());
-                        response.sendRedirect("/");
-                    }
-                })
-                .failureHandler(new AuthenticationFailureHandler() {
-                    @Override
-                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-                        System.out.println("exception" + exception.getMessage());
-                        response.sendRedirect("/login");
+                .formLogin();
 
-                    }
+        http
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .addLogoutHandler((request, response, authentication) -> {
+                    HttpSession session = request.getSession();
+                    session.invalidate();
                 })
-                .permitAll();
+                .logoutSuccessHandler((request, response, authentication) -> response.sendRedirect("/login"))
+                .deleteCookies("remember-me");
 
 
         return http.build();
