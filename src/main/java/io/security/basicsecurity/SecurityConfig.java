@@ -37,6 +37,16 @@ public class SecurityConfig{
         // 로그인 실패 후 핸들러
         http
                 .formLogin();
+        http
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+                // SessionCreationPolicy.Stateless => JWT 방식 채택 시 사용
+//                .sessionFixation().changeSessionId(); // 접속할때마다 세션아이디 생성으로 공격자의 침입 방지
+//                .maximumSessions(1) // 최대 로그인 세션 가능
+//                .maxSessionsPreventsLogin(true); // true 이면 세션이 초과되면 새로 로그인 못하게함
+//                                                    // false 이면 전의 로그인 사용자의 세션 만료시켜버림
+
+
 
 
 
