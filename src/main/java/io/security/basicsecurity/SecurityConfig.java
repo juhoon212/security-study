@@ -23,7 +23,6 @@ import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
-
 public class SecurityConfig{
 
     @Autowired
@@ -39,21 +38,6 @@ public class SecurityConfig{
         http
                 .formLogin();
 
-        http
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .addLogoutHandler((request, response, authentication) -> {
-                    HttpSession session = request.getSession();
-                    session.invalidate();
-                })
-                .logoutSuccessHandler((request, response, authentication) -> response.sendRedirect("/login"))
-                .deleteCookies("remember-me")
-                .and()
-                .rememberMe()
-                .rememberMeParameter("remember")
-                .tokenValiditySeconds(3600)
-                .userDetailsService(userDetailService);
 
 
         return http.build();
