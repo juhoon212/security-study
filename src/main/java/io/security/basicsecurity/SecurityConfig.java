@@ -34,7 +34,11 @@ public class SecurityConfig{
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests()
+                .authorizeRequests()
+                .antMatchers("/user").hasRole("USER")
+                .antMatchers("/admin/pay").hasRole("ADMIN")
+                .antMatchers("/admin/**").access("hasRole('ADMIN') or hasRole('SYS')")
+
                 .anyRequest().authenticated();
         // 로그인 성공 후 핸들러
         // 로그인 실패 후 핸들러
