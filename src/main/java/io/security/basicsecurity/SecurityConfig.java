@@ -67,7 +67,17 @@ public class SecurityConfig{
                 .password("{noop}1111")
                 .roles("USER")
                 .build();
+        UserDetails sys = User.builder()
+                .username("sys")
+                .password("{noop}1111")
+                .roles("SYS")
+                .build();
+        UserDetails admin = User.builder()
+                .username("admin")
+                .password("{noop}1111")
+                .roles("ADMIN", "SYS", "USER")
+                .build();
 
-        return new InMemoryUserDetailsManager(user); // 신버전 유저 인메모리로 생성하는법
+        return new InMemoryUserDetailsManager(user, sys, admin); // 신버전 유저 인메모리로 생성하는법
     }
 }
