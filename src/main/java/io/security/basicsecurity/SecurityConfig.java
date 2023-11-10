@@ -82,31 +82,32 @@ public class SecurityConfig{
 //                .maxSessionsPreventsLogin(true); // true 이면 세션이 초과되면 새로 로그인 못하게함
 //                                                    // false 이면 전의 로그인 사용자의 세션 만료시켜버림
 
-
+//        http
+//                .csrf().disable(); csrf 끄기
 
 
 
         return http.build();
     }
 
-    @Bean
-    public UserDetailsManager users() {
-        UserDetails user = User.builder()
-                .username("user")
-                .password("{noop}1111")
-                .roles("USER")
-                .build();
-        UserDetails sys = User.builder()
-                .username("sys")
-                .password("{noop}1111")
-                .roles("SYS")
-                .build();
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password("{noop}1111")
-                .roles("ADMIN", "SYS", "USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(user, sys, admin); // 신버전 유저 인메모리로 생성하는법
-    }
+//    @Bean
+//    public UserDetailsManager users() {
+//        UserDetails user = User.builder()
+//                .username("user")
+//                .password("{noop}1111")
+//                .roles("USER")
+//                .build();
+//        UserDetails sys = User.builder()
+//                .username("sys")
+//                .password("{noop}1111")
+//                .roles("SYS")
+//                .build();
+//        UserDetails admin = User.builder()
+//                .username("admin")
+//                .password("{noop}1111")
+//                .roles("ADMIN", "SYS", "USER")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user, sys, admin); // 신버전 유저 인메모리로 생성하는법
+//    }
 }
